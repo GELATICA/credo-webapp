@@ -95,6 +95,7 @@ Get or update user info
 | `display_name` | User display name | 50 characters or fewer |
 | `team` | Name of the team to join | 50 characters or fewer, empty string indicates no team |
 | `language` | User language code (ISO 639-1) | 10 characters or fewer |
+| `new_password` | New password | 128 characters or fewer |
 
 **Required fields:** none
 
@@ -107,14 +108,6 @@ Get or update user info
 **Example response:** [info_success.json](sample-payloads/responses/info_success.json)
 
 **On success:** HTTP_2xx
-
-**On failure:** HTTP_4xx/HTTP_5xx (optional message)
-
-## /api/v2/start (Not implemented)
-
-**Authorization:** token
-
-**On success:** HTTP_2xx (optional message)
 
 **On failure:** HTTP_4xx/HTTP_5xx (optional message)
 

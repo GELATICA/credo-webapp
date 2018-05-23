@@ -32,6 +32,7 @@ class InfoRequestSerializer(GenericRequestSerializer):
     display_name = serializers.CharField(max_length=50, required=False)
     team = serializers.CharField(max_length=50, allow_blank=True, required=False)
     language = serializers.CharField(max_length=10, required=False)
+    new_password = serializers.CharField(max_length=128, required=False)
 
 
 class DetectionSerializer(serializers.Serializer):

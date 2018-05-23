@@ -118,6 +118,9 @@ def handle_update_info(request):
         user.language = vd['language']
         update_fields.append('language')
 
+    if vd.get('new_password'):
+        user.set_password(vd['new_password'])
+
     try:
         user.save(update_fields=update_fields)
         logger.info('Updated info for user {}'.format(user))
