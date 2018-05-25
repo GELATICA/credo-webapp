@@ -111,6 +111,21 @@ Get or update user info
 
 **On failure:** HTTP_4xx/HTTP_5xx (optional message)
 
+## /api/v2/user/delete_account
+Delete user account
+
+| Field | Description | Constraint |
+| --- | --- | --- |
+| `password` | Password | 128 characters or fewer |
+
+**Required fields:** password
+
+**Authorization:** token
+
+**On success:** HTTP_2xx
+
+**On failure:** HTTP_4xx/HTTP_5xx (optional message)
+
 ## /api/v2/detection
 Submit detection
 

@@ -8,7 +8,8 @@ from rest_framework import status
 
 from credoapiv2.authentication import DRFTokenAuthentication
 from credoapiv2.exceptions import CredoAPIException, RegistrationException, LoginException
-from credoapiv2.handlers import handle_registration, handle_login, handle_detection, handle_update_info, handle_ping, handle_data_export
+from credoapiv2.handlers import handle_registration, handle_login, handle_detection, handle_update_info, \
+    handle_delete_account, handle_ping, handle_data_export
 
 import logging
 
@@ -73,6 +74,29 @@ class UserInfoView(APIView):
                 return Response(data=data, status=status.HTTP_200_OK)
             except CredoAPIException as e:
                 return Response(data={'message': 'Updating user info failed. Reason: ' + e.message},
+                                status=status.HTTP_400_BAD_REQUEST)
+            except Exception as e:
+                logger.exception(e)
+                return Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        else:
+            return Response(data={'message': 'Invalid token'}, status=status.HTTP_401_UNAUTHORIZED)
+
+
+class UserDeleteAccountView(APIView):
+    """
+    post:
+    Delete user account
+    """
+    authentication_classes = (DRFTokenAuthentication, )
+    parser_classes = (JSONParser,)
+
+    def post(self, request):
+        if request.user.is_authenticated:
+            try:
+                data = handle_delete_account(request)
+                return Response(data=data, status=status.HTTP_200_OK)
+            except CredoAPIException as e:
+                return Response(data={'message': 'Deleting user account failed. Reason: ' + e.message},
                                 status=status.HTTP_400_BAD_REQUEST)
             except Exception as e:
                 logger.exception(e)

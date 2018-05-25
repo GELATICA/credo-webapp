@@ -150,11 +150,11 @@ def handle_delete_account(request):
             username = user.username
             user.delete()
             logger.info('Deleted user {}'.format(username))
+            return {'message': 'User account removed'}
         except IntegrityError:
             raise CredoAPIException('Invalid parameters')
-
-    data = {}
-    return data
+    else:
+        return {'message': 'Invalid password'}
 
 
 def handle_detection(request):
