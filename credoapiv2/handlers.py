@@ -13,7 +13,7 @@ from credocommon.helpers import generate_token, validate_image, send_registratio
 from credoapiv2.exceptions import CredoAPIException, RegistrationException, LoginException
 from credoapiv2.serializers import RegisterRequestSerializer, LoginRequestSerializer, InfoRequestSerializer, \
     DetectionRequestSerializer, PingRequestSerializer, DataExportRequestSerializer, ExportDetectionSerializer, \
-    ExportPingSerializer
+    ExportPingSerializer, DeleteAccountRequestSerializer
 
 import logging
 
@@ -134,6 +134,26 @@ def handle_update_info(request):
         'team': user.team.name,
         'language': user.language,
     }
+    return data
+
+
+def handle_delete_account(request):
+    serializer = DeleteAccountRequestSerializer(data=request.data)
+    if not serializer.is_valid():
+        raise CredoAPIException(str(serializer.errors))
+    vd = serializer.validated_data
+
+    user = request.user
+
+    if user.check_password(vd['password']):
+        try:
+            username = user.username
+            user.delete()
+            logger.info('Deleted user {}'.format(username))
+        except IntegrityError:
+            raise CredoAPIException('Invalid parameters')
+
+    data = {}
     return data
 
 
