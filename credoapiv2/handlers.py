@@ -120,6 +120,8 @@ def handle_update_info(request):
 
     if vd.get('new_password'):
         user.set_password(vd['new_password'])
+        user.key = generate_token()
+        update_fields.append('key')
 
     try:
         user.save(update_fields=update_fields)
@@ -133,6 +135,7 @@ def handle_update_info(request):
         'email': user.email,
         'team': user.team.name,
         'language': user.language,
+        'token': user.key
     }
     return data
 
